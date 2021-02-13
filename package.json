@@ -1,0 +1,19 @@
+{
+  "name": "dev_connector",
+  "version": "1.0.0",
+  "description": "MERN practice project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server",
+    "server": "nodemon server"
+  },
+  "author": "Dave Clydesdale/Brad Travesy",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.3",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "gravatar": "^1.8.1"
+  }
+}
