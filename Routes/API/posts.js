@@ -141,6 +141,7 @@ router.put('/like/:post_id', auth, async (req, res) => {
   try {
 
     const post = await Post.findById(req.params.post_id)
+    const user = await User.findById(req.user.id)
 
     if(!post){
       return res.status(404).json({ msg: 'Post not found' })
@@ -149,7 +150,7 @@ router.put('/like/:post_id', auth, async (req, res) => {
     const removeIdx = post.likes.map(like => like.user.toString()).indexOf(req.user.id)
   
     // like or unlike based on whether the user has already liked
-   removeIdx ? post.likes.unshift({user: req.user.id}) : post.likes.splice(removeIdx, 1)    
+   removeIdx ? post.likes.unshift({user: req.user.id, name: user.name }) : post.likes.splice(removeIdx, 1)    
 
     await post.save()
 
@@ -164,10 +165,10 @@ router.put('/like/:post_id', auth, async (req, res) => {
   }
 })
 
-// @route     PUT /posts/comment/:post_id
+// @route     POST /posts/comment/:post_id
 // @desc      Comment on a post
 // @access    private
-router.put('/comment/:post_id', [ auth, [
+router.post('/comment/:post_id', [ auth, [
   check('text', 'Text is required').not().isEmpty()
 ]], async (req, res) => {
 
@@ -180,14 +181,13 @@ router.put('/comment/:post_id', [ auth, [
   try {
 
     const post = await Post.findById(req.params.post_id)
+    const user = await User.findById(req.user.id).select('-password')
 
     if(!post){
       return res.status(404).json({ msg: 'Post not found' })
     }
 
 
-    const user = await User.findById(req.user.id).select('-password')
-  
     const newComment = {
       text: req.body.text,
       name: user.name,
@@ -225,10 +225,11 @@ router.delete('/comment/:post_id/:comment_id', auth, async(req, res) => {
       return res.status(404).json({ msg: 'Post not found' })
     }
 
-    const comment = post.comments.filter(comment => comment._id.toString() === req.params.comment_id)[0]
+    // const comment = post.comments.filter(comment => comment._id.toString() === req.params.comment_id)[0]
+    const comment = post.comments.find(comment => comment._id.toString() === req.params.comment_id)
 
     if(!comment){
-      return res.status(400).json({ msg: "Comment not found"})  
+      return res.status(404).json({ msg: "Comment not found"})  
     }
     
     // check user is owner 
