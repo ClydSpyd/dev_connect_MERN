@@ -1,0 +1,6 @@
+{
+  "mongoURI": "mongodb+srv://Baloo:Baloo123@cluster0.evvz0.mongodb.net/?retryWrites=true&w=majority",
+  "jwtSecret": "mysecrettoken",
+  "githubClientID": "e6d8fcb5b79e332480da",
+  "githubClientSecret": "12d8bd236b29aa2dad2dd969aaa26944771c5d30"
+}
