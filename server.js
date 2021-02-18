@@ -3,6 +3,12 @@ const connectDB = require('./config/db')
 
 const app = express()
 
+// allow cross-origin requests
+const cors = require('cors');
+app.use(cors());
+app.options('*', cors());
+
+
 // connect to db
 connectDB()
 
