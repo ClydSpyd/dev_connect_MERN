@@ -1,4 +1,4 @@
-import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, PROFILE_EDIT_SUCCESS, PROFILE_EDIT_FAILURE } from "../actions/types";
+import { CLEAR_PROFILE, GET_PROFILE, PROFILE_ERROR, PROFILE_EDIT_SUCCESS, PROFILE_EDIT_FAILURE, UPDATE_PROFILE, DELETE_EXPERIENCE, DELETE_EDUCATION, GET_PROFILES, GET_REPOS } from "../actions/types";
 
 const initialState = {
   profile: null,
@@ -15,12 +15,30 @@ export default function(state=initialState, action) {
   switch(type){
 
     case GET_PROFILE:
+    case UPDATE_PROFILE:
+    case DELETE_EXPERIENCE:
+    case DELETE_EDUCATION:
       return {
         ...state,
         profile: payload,
         loading: false
       };
-
+    
+    case GET_PROFILES:
+      return {
+        ...state,
+        profiles: payload,
+        loading: false
+      };
+    
+    case GET_REPOS:
+      return {
+        ...state,
+        repos: payload,
+        loading: false
+      };
+    
+    
     case PROFILE_EDIT_SUCCESS:
       return {
         ...state,
@@ -33,6 +51,13 @@ export default function(state=initialState, action) {
       return{
         ...state,
         profile: null,
+        error: payload,
+        loading: false
+      };
+
+    case 'GITHUB_ERROR':
+      return{
+        ...state,
         error: payload,
         loading: false
       };

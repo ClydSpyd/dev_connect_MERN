@@ -186,6 +186,11 @@ img {
   color: #333;
 }
 
+.btn-like {
+  background: var(--primary-color);
+  color: #333;
+}
+
 .btn-dark,
 .bg-dark,
 .badge-dark,

@@ -2,9 +2,12 @@ import React, { useEffect } from 'react'
 import { connect, useSelector } from 'react-redux'
 import { Link, Redirect } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { getCurrentProfile } from '../../actions/profile'
+import { deleteAccount, getCurrentProfile } from '../../actions/profile'
 import Spinner from '../layout/Spinner'
 import DashboardActions from './DashboardActions'
+import Experience from './Experience'
+import Education from './Education'
+import store from '../../store'
 
 function Dashboard({ profile: { profile, error, loading } , getCurrentProfile, auth, auth: { isAuthenticated, user } }) {
 
@@ -31,8 +34,18 @@ function Dashboard({ profile: { profile, error, loading } , getCurrentProfile, a
         {
           profile !== null ? (
 
-            <DashboardActions />
-            
+            <>
+              <DashboardActions />
+              <Education education={profile.education} />
+              <Experience experience={profile.experience} />
+
+              <div className="my-2">
+                <button onClick={()=> store.dispatch( deleteAccount()) } className="btn btn-danger">
+                  <i className="fas fa-user-minus"></i>{' '} Delete my account
+                </button>
+              </div>
+            </>
+
           ) : (
             <>
               <p>You have not yet set up a profile, please add some info</p>
@@ -40,6 +53,7 @@ function Dashboard({ profile: { profile, error, loading } , getCurrentProfile, a
             </>
           )
         }
+
         
       </>
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import { createProfile, getCurrentProfile } from '../../actions/profile';
 import store from '../../store';
 
@@ -30,7 +30,7 @@ function CreateProfile() {
       youtube: profile&&profile.social&&profile.social.youtube?profile.social.youtube:'',
       instagram: profile&&profile.social&&profile.social.instagram?profile.social.instagram:''
     })
-  },[stateProfile])
+  },[stateProfile, getCurrentProfile])
 
   const [formData, setFormData] = useState({
     company: '',
@@ -205,7 +205,7 @@ function CreateProfile() {
         } 
 
         <input type="submit" className="btn btn-primary my-1" />
-        <a className="btn btn-light my-1" href="dashboard.html">Go Back</a>
+        <Link  to="/dashboard" className="btn btn-light my-1">Go Back</Link>
       </form>
     </>
   )

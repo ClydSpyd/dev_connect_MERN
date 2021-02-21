@@ -138,6 +138,8 @@ router.delete('/:post_id', auth, async(req, res) => {
 // @access    private
 router.put('/like/:post_id', auth, async (req, res) => {
 
+  console.log('like')
+
   try {
 
     const post = await Post.findById(req.params.post_id)
@@ -171,12 +173,13 @@ router.put('/like/:post_id', auth, async (req, res) => {
 router.post('/comment/:post_id', [ auth, [
   check('text', 'Text is required').not().isEmpty()
 ]], async (req, res) => {
-
+  
   const errors = validationResult(req)
 
   if(!errors.isEmpty()){
     return res.status(400).json({ errors: errors.array() })
   }
+  console.log(req.params.post_id)
 
   try {
 

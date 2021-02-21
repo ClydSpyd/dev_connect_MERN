@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Profile = require ('../../models/Profile');
+const Post = require ('../../models/Post');
 const auth = require('../../middleware/auth')
 const { check, validationResult } = require("express-validator");
 const request = require('request')
@@ -65,6 +66,8 @@ router.post('/', [auth, [
     dogPreference
   } = req.body
 
+  console.log(skills)
+
   // build profile object
   const profileFields = {}
   
@@ -77,7 +80,7 @@ router.post('/', [auth, [
   if(githubusername)profileFields.githubusername=githubusername
   if(dogPreference)profileFields.dogPreference=dogPreference
   if(skills){
-    profileFields.skills = skills.split(',').map(skill => skill.trim())
+    profileFields.skills =  typeof skills === 'string' ? skills.split(',').map(skill => skill.trim()) : skills
   }
 
   profileFields.social = {}
@@ -174,7 +177,8 @@ router.get('/user/:user_id', async (req, res) => {
 router.delete('/', auth, async (req,res) => {
   
   try {
-    // @todo remove user posts
+    // remove user posts
+    await Post.deleteMany({ user: req.user.id })
 
     // remove user & profile
     await Profile.findOneAndRemove({ user: req.user.id })
